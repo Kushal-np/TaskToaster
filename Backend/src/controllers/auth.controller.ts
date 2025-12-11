@@ -5,7 +5,7 @@ import generateToken from "../utils/generateToken";
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, email, phone, password }: IRegisterRequest = req.body;
+    const { name, email, phone, password ,role  }: IRegisterRequest = req.body;
 
     if (!name || !email || !password) {
       res.status(400).json({
@@ -29,6 +29,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       email,
       phone,
       password,
+      role: role || "member"
+      
     });
 
     const userResponse: IUserResponse = {
@@ -36,10 +38,11 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       email: user.email,
       phone: user.phone,
       clubIds: user.clubIds ?? [],
+      role:user.role,
       createdAt: user.createdAt,
     };
 
-    const token = generateToken({ userId: user._id });
+    const token = generateToken({ userId: user._id , role:user.role });
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -78,7 +81,7 @@ export const login = async(req:Request , res:Response) : Promise<void> =>{
             })
             return ; 
         }
-        const token = generateToken({userId : user._id});
+        const token = generateToken({userId : user._id , role:user.role});
 
         res.cookie("token" , token ,{
             httpOnly:true , 
@@ -92,6 +95,7 @@ export const login = async(req:Request , res:Response) : Promise<void> =>{
             email:user.email , 
             phone :user.phone , 
             clubIds:user.clubIds ?? [] , 
+            role:user.role , 
             createdAt:user.createdAt , 
         }
 

@@ -6,6 +6,7 @@ export interface IUser extends Document {
   phone: string;
   password: string;
   clubIds?: Types.ObjectId[];
+  role:string ; 
   createdAt: Date;   
   updatedAt: Date;
 }
@@ -15,6 +16,7 @@ export interface IRegisterRequest {
   email: string;
   phone: string;
   password: string;
+  role?: string;
 }
 
 export interface IUserResponse {
@@ -22,6 +24,7 @@ export interface IUserResponse {
   email: string;
   phone: string;
   clubIds: Types.ObjectId[]; 
+  role:string ; 
   createdAt: Date;
 }
 
@@ -46,6 +49,7 @@ export interface IAuthResponse {
 
 export interface IJWTPayload {
     userId:object ; 
+    role:string
 }
 
 export interface ILoginRequest{

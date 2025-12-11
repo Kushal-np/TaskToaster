@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-import bcrypt from "bcryptjs";
 import { IUser } from "../types";
 
 const userSchema = new Schema<IUser>(
@@ -34,6 +33,10 @@ const userSchema = new Schema<IUser>(
         ref: "Club",
       },
     ],
+    role:{
+        type:String , 
+        enum:["guest" , "member" , "TMOD" , "club_admin"] , default:"member"
+    }
   },
   { timestamps: true }
 );
