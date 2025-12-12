@@ -1,13 +1,14 @@
 import { Document, Types } from "mongoose";
 
 export interface IUser extends Document {
+  _id: Types.ObjectId;
   name: string;
   email: string;
   phone: string;
   password: string;
   clubIds?: Types.ObjectId[];
-  role:string ; 
-  createdAt: Date;   
+  role: string;
+  createdAt: Date;
   updatedAt: Date;
 }
 
@@ -23,8 +24,8 @@ export interface IUserResponse {
   name: string;
   email: string;
   phone: string;
-  clubIds: Types.ObjectId[]; 
-  role:string ; 
+  clubIds: Types.ObjectId[];
+  role: string;
   createdAt: Date;
 }
 
@@ -36,7 +37,7 @@ export interface IClub extends Document {
   division: string;
   area: string;
   charteredDate: Date;
-  createdBy: string;
+  createdBy: Types.ObjectId;
   members: string[];
   createdAt: Date;
   updatedAt: Date;
@@ -44,15 +45,15 @@ export interface IClub extends Document {
 
 export interface IAuthResponse {
   user: IUserResponse;
-  message:string ;
+  message: string;
 }
 
 export interface IJWTPayload {
-    userId:object ; 
-    role:string
+  userId: string;
+  role: string;
 }
 
-export interface ILoginRequest{
-    email:string;
-    password :string ; 
+export interface ILoginRequest {
+  email: string;
+  password: string;
 }

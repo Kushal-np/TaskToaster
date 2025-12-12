@@ -23,6 +23,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@types/cookie-parser": "^1.4.10",
     "@types/dotenv": "^6.1.1",
     "@types/express-validator": "^2.20.33",
     "@types/mongoose": "^5.11.96",
