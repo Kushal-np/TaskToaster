@@ -68,14 +68,22 @@ export enum MeetingStatus {
 
 export interface IMeeting extends Document {
   _id: Types.ObjectId;
-  clubId: string;
+  clubId: Types.ObjectId;
   meetingNumber: number;
   theme: string;
   meetingDate: Date;
   startTime: string;
-  toastmasterOfDay: string;
+  toastmasterOfDay: Types.ObjectId;
   status: MeetingStatus;
-  createdBy: string; 
+  createdBy: Types.ObjectId; 
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IAgenda extends Document {
+  _id: Types.ObjectId;
+  meetingId: Types.ObjectId;
+  items: IAgendaItem[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -87,14 +95,6 @@ export interface IAgendaItem {
   assignedToName?: string; 
   allocatedTime: string; 
   sequence: number;
-}
-
-export interface IAgenda extends Document {
-  _id: Types.ObjectId;
-  meetingId: string;
-  items: IAgendaItem[];
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 
