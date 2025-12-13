@@ -1,14 +1,14 @@
 import express, { Router } from "express";
 import { authMiddleware, authorizedRoles } from "../middleware/auth.middleware";
 import {
-  createMeeting,
-  getClubMeetings,
-  getMeeting,
-  getMeetingById,
-  updateMeeting,
-  updateMeetingStatus,
-  deleteMeeting
-} from "../controllers/meeting.controller";
+  createEvent,
+  getClubEvents,
+  getEventById,
+  updateEvent,
+  deleteEvent,
+  rsvpEvent,
+  cancelRsvp
+} from "../controllers/event.controller";
 
 const router = Router();
 
@@ -16,46 +16,45 @@ router.post(
   "/create",
   authMiddleware,
   authorizedRoles("member", "TMOD", "club_admin"),
-  createMeeting
+  createEvent
 );
 
 router.get(
-  "/club/:clubid",
+  "/club/:clubId",
   authMiddleware,
-  getClubMeetings
-);
-
-router.get(
-  "/all/:clubid",
-  authMiddleware,
-  getMeeting
+  getClubEvents
 );
 
 router.get(
   "/:id",
   authMiddleware,
-  getMeetingById
+  getEventById
 );
 
 router.put(
   "/:id",
   authMiddleware,
   authorizedRoles("member", "TMOD", "club_admin"),
-  updateMeeting
-);
-
-router.patch(
-  "/:id/status",
-  authMiddleware,
-  authorizedRoles("TMOD", "club_admin"),
-  updateMeetingStatus
+  updateEvent
 );
 
 router.delete(
   "/:id",
   authMiddleware,
   authorizedRoles("TMOD", "club_admin"),
-  deleteMeeting
+  deleteEvent
+);
+
+router.post(
+  "/:id/rsvp",
+  authMiddleware,
+  rsvpEvent
+);
+
+router.delete(
+  "/:id/rsvp",
+  authMiddleware,
+  cancelRsvp
 );
 
 export default router;

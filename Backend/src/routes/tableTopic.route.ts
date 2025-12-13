@@ -1,61 +1,46 @@
 import express, { Router } from "express";
 import { authMiddleware, authorizedRoles } from "../middleware/auth.middleware";
 import {
-  createMeeting,
-  getClubMeetings,
-  getMeeting,
-  getMeetingById,
-  updateMeeting,
-  updateMeetingStatus,
-  deleteMeeting
-} from "../controllers/meeting.controller";
+  recordTableTopic,
+  getUserTableTopics,
+  getMeetingTableTopics,
+  updateTableTopic,
+  deleteTableTopic
+} from "../controllers/tableTopic.controller";
 
 const router = Router();
 
 router.post(
-  "/create",
+  "/record",
   authMiddleware,
   authorizedRoles("member", "TMOD", "club_admin"),
-  createMeeting
+  recordTableTopic
 );
 
 router.get(
-  "/club/:clubid",
+  "/user/:userId",
   authMiddleware,
-  getClubMeetings
+  getUserTableTopics
 );
 
 router.get(
-  "/all/:clubid",
+  "/meeting/:meetingId",
   authMiddleware,
-  getMeeting
-);
-
-router.get(
-  "/:id",
-  authMiddleware,
-  getMeetingById
+  getMeetingTableTopics
 );
 
 router.put(
   "/:id",
   authMiddleware,
   authorizedRoles("member", "TMOD", "club_admin"),
-  updateMeeting
-);
-
-router.patch(
-  "/:id/status",
-  authMiddleware,
-  authorizedRoles("TMOD", "club_admin"),
-  updateMeetingStatus
+  updateTableTopic
 );
 
 router.delete(
   "/:id",
   authMiddleware,
   authorizedRoles("TMOD", "club_admin"),
-  deleteMeeting
+  deleteTableTopic
 );
 
 export default router;

@@ -102,7 +102,7 @@ export interface IAgenda extends Document {
 
 export interface IEvent extends Document {
   _id: Types.ObjectId;
-  clubId: string;
+  clubId: Types.ObjectId;
   eventName: string;
   description: string;
   eventDate: Date;
@@ -112,7 +112,156 @@ export interface IEvent extends Document {
   topic?: string;
   registrationLink?: string;
   whatsappLink?: string;
-  createdBy: string;
+  createdBy: Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+
+//Guests 
+
+export interface IGuest extends Document{
+  _id:Types.ObjectId ; 
+  name:string ; 
+  email?:string ; 
+  phone?:string ; 
+  isToastmaster:boolean ; 
+  homeClubNumber?:string ;
+  homeClubName?:string ; 
+  invitedBy: Types.ObjectId ; 
+  meetingIds: Types.ObjectId[];
+  rolesTaken : string[];
+  createdAt:Date ; 
+  updatedAt:Date ; 
+}
+
+
+//template 
+export interface ITemplateItem {
+  time:string; 
+  role:string; 
+  allocatedItem:string; 
+  sequence : number ; 
+  isRequired:boolean ; 
+  description?:string ;
+}
+
+export interface IAgendaTemplate extends Document {
+  _id:Types.ObjectId ; 
+  name:string ;
+  description:string ;
+  items:ITemplateItem[];
+  clubId? : Types.ObjectId ; 
+  isDefault :boolean ; 
+  createdBy: Types.ObjectId ; 
+  timeUsed : number ; 
+  createdAt:Date ; 
+  updatedAt : Date ; 
+}
+
+
+
+export interface IEvent extends Document {
+  _id: Types.ObjectId;
+  clubId: Types.ObjectId;
+  eventName: string;
+  description: string;
+  eventDate: Date;
+  eventTime: string;
+  venue: string;
+  venueType: 'online' | 'offline' | 'hybrid';
+  speaker?: string;
+  speakerTitle?: string; // DTM, World Champion, etc.
+  topic?: string;
+  registrationLink?: string;
+  whatsappLink?: string;
+  zoomLink?: string;
+  attendees: Types.ObjectId[]; // Users who RSVP'd
+  maxAttendees?: number;
+  isPublic: boolean; // Can non-members see it?
+  eventType: 'workshop' | 'contest' | 'meeting' | 'social' | 'other';
+  createdBy: Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+
+export interface IRoleHistory extends Document{
+  _id:Types.ObjectId ; 
+  userId ?:Types.ObjectId ; 
+  guestId ? : Types.ObjectId ; 
+  userModel: "User" | "Guest" ; 
+  participantName: string ; 
+  meetingId:Types.ObjectId ; 
+  role:string ; 
+  completedAt:Date ; 
+  feedback? :string; 
+  rating? :number;
+  givenBy? : Types.ObjectId ; 
+  createdAt:Date;
+  updatedAt:Date ;
+}
+
+
+
+
+//speeches
+export interface ISpeech extends Document {
+  _id: Types.ObjectId;
+  speakerId: Types.ObjectId;
+  speakerModel: 'User' | 'Guest';
+  speakerName: string;
+  meetingId: Types.ObjectId;
+  title: string;
+  speechType: 'prepared' | 'evaluation' | 'icebreaker';
+  pathwaysProject?: {
+    level: string;
+    pathway: string;
+    projectName: string;
+  };
+  objectives?: string[];
+  duration: string;
+  targetDuration: string;
+  evaluatorId?: Types.ObjectId;
+  evaluatorFeedback?: string;
+  evaluatorRating?: number;
+  completedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+
+// table topic
+
+export interface ITableTopic extends Document {
+  _id: Types.ObjectId;
+  meetingId: Types.ObjectId;
+  participantId?: Types.ObjectId;
+  guestId?: Types.ObjectId;
+  participantModel: 'User' | 'Guest';
+  participantName: string;
+  topic: string;
+  duration: string;
+  targetDuration: string;
+  rating?: number;
+  notes?: string;
+  completedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+
+//attendance
+export interface IAttendance extends Document {
+  _id: Types.ObjectId;
+  meetingId: Types.ObjectId;
+  userId?: Types.ObjectId;
+  guestId?: Types.ObjectId;
+  attendeeModel: 'User' | 'Guest';
+  attendeeName: string;
+  checkInTime?: Date;
+  checkOutTime?: Date;
+  status: 'present' | 'absent' | 'late';
   createdAt: Date;
   updatedAt: Date;
 }

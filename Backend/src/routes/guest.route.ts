@@ -1,14 +1,12 @@
 import express, { Router } from "express";
 import { authMiddleware, authorizedRoles } from "../middleware/auth.middleware";
 import {
-  createMeeting,
-  getClubMeetings,
-  getMeeting,
-  getMeetingById,
-  updateMeeting,
-  updateMeetingStatus,
-  deleteMeeting
-} from "../controllers/meeting.controller";
+  createGuest,
+  getGuests,
+  getGuestById,
+  updateGuest,
+  deleteGuest
+} from "../controllers/guest.controller";
 
 const router = Router();
 
@@ -16,46 +14,33 @@ router.post(
   "/create",
   authMiddleware,
   authorizedRoles("member", "TMOD", "club_admin"),
-  createMeeting
+  createGuest
 );
 
 router.get(
-  "/club/:clubid",
+  "/",
   authMiddleware,
-  getClubMeetings
-);
-
-router.get(
-  "/all/:clubid",
-  authMiddleware,
-  getMeeting
+  getGuests
 );
 
 router.get(
   "/:id",
   authMiddleware,
-  getMeetingById
+  getGuestById
 );
 
 router.put(
   "/:id",
   authMiddleware,
   authorizedRoles("member", "TMOD", "club_admin"),
-  updateMeeting
-);
-
-router.patch(
-  "/:id/status",
-  authMiddleware,
-  authorizedRoles("TMOD", "club_admin"),
-  updateMeetingStatus
+  updateGuest
 );
 
 router.delete(
   "/:id",
   authMiddleware,
   authorizedRoles("TMOD", "club_admin"),
-  deleteMeeting
+  deleteGuest
 );
 
 export default router;
