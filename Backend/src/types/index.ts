@@ -75,6 +75,14 @@ export interface IMeeting extends Document {
   startTime: string;
   toastmasterOfDay: Types.ObjectId;
   status: MeetingStatus;
+      venue?: string;
+    venueLink?: string;
+    onlineLink?: string;
+    onlineMeetingId?: string;
+    onlinePasscode?: string;
+    whatsappLink?: string;
+    resourceLinks?: Array<{ name: string; url: string }>;
+    isHybrid?: boolean;
   createdBy: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
@@ -265,3 +273,6 @@ export interface IAttendance extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+
+

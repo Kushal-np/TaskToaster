@@ -19,7 +19,21 @@ export const createMeeting = async (req: AuthRequest, res: Response): Promise<vo
       return;
     }
 
-    const { clubId, theme, meetingDate, startTime, toastmasterOfDay } = req.body;
+        const { 
+            clubId, 
+            theme, 
+            meetingDate, 
+            startTime, 
+            toastmasterOfDay,
+            venue,
+            venueLink,
+            onlineLink,
+            onlineMeetingId,
+            onlinePasscode,
+            whatsappLink,
+            resourceLinks,
+            isHybrid
+        } = req.body;
 
     if (!clubId || !theme || !meetingDate || !startTime) {
       res.status(400).json({
@@ -57,6 +71,14 @@ export const createMeeting = async (req: AuthRequest, res: Response): Promise<vo
       startTime,
       toastmasterOfDay: toastmasterOfDay || userId,
       status: MeetingStatus.DRAFT,
+                  venue,
+            venueLink,
+            onlineLink,
+            onlineMeetingId,
+            onlinePasscode,
+            whatsappLink,
+            resourceLinks: resourceLinks || [],
+            isHybrid: isHybrid || false,
       createdBy: userId,
     });
 

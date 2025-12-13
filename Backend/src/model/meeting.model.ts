@@ -35,6 +35,38 @@ const meetingSchema = new Schema<IMeeting>(
             type: String,
             enum: Object.values(MeetingStatus)
         },
+                venue: {
+            type: String,
+            trim: true
+        },
+        venueLink: {
+            type: String,
+            trim: true
+        },
+        onlineLink: {
+            type: String,
+            trim: true
+        },
+        onlineMeetingId: {
+            type: String,
+            trim: true
+        },
+        onlinePasscode: {
+            type: String,
+            trim: true
+        },
+        whatsappLink: {
+            type: String,
+            trim: true
+        },
+        resourceLinks: [{
+            name: String,
+            url: String
+        }],
+        isHybrid: {
+            type: Boolean,
+            default: false  // Both online + physical
+        },
         createdBy: {
             type: Schema.Types.ObjectId,
             ref: "User",

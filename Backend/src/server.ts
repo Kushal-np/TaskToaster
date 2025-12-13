@@ -24,7 +24,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:3000",
+  origin: "https://id-preview--8de08d0d-ac1a-4c96-9665-b4635327a554.lovable.app",
   credentials: true
 }));
 app.use(express.json());
@@ -37,7 +37,7 @@ app.get("/health", (req, res) => {
 });
 
 // API Routes
-app.use("/api/v1/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/v1/club", clubRoutes);
 app.use("/api/v1/meeting", meetingRoutes);
 app.use("/api/v1/agenda", agendaRoutes);
