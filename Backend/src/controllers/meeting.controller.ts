@@ -83,39 +83,50 @@ export const createMeeting = async (
 };
 
 
+
 export const getMeeting = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const { clubid } = req.params; // optional: filter by club
+    const { status } = req.query;   // optional: filter by meeting status
 
-    const meeting = await Meeting.findById(id)
-      .populate('clubId', 'clubName clubNumber')
-      .populate('toastmasterOfDay', 'name email')
-      .populate('createdBy', 'name email');
+    const filter: any = {};
 
-    if (!meeting) {
-      res.status(404).json({
-        success: false,
-        message: 'Meeting not found'
-      });
-      return;
+    if (clubid) {
+      filter.clubId = new mongoose.Types.ObjectId(clubid);
     }
 
-    // Get agenda
-    const agenda = await Agenda.findOne({ meetingId: new mongoose.Types.ObjectId(id) });
+    if (status) {
+      filter.status = status;
+    }
+
+    // Get all meetings matching filter
+    const meetings = await Meeting.find(filter)
+      .populate('clubId', 'clubName clubNumber')
+      .populate('toastmasterOfDay', 'name email')
+      .populate('createdBy', 'name email')
+      .sort({ meetingDate: -1 });
+
+    // Attach agenda for each meeting
+    const meetingsWithAgendas = await Promise.all(
+      meetings.map(async (meeting) => {
+        const agenda = await Agenda.findOne({ meetingId: meeting._id });
+        return {
+          ...meeting.toObject(),
+          agenda,
+        };
+      })
+    );
 
     res.status(200).json({
       success: true,
-      data: {
-        meeting,
-        agenda
-      }
+      data: meetingsWithAgendas,
     });
   } catch (error: any) {
-    console.error('Get meeting error:', error);
+    console.error("Get meetings error:", error);
     res.status(500).json({
       success: false,
-      message: 'Error fetching meeting',
-      error: error.message
+      message: "Error fetching meetings",
+      error: error.message,
     });
   }
 };

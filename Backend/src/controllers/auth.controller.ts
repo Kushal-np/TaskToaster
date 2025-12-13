@@ -3,7 +3,7 @@ import { IRegisterRequest, IUserResponse, IAuthResponse, ILoginRequest } from ".
 import { User } from "../model/user.model";
 import generateToken from "../utils/generateToken";
 import { AuthRequest } from "../middleware/auth.middleware";
-
+import bcrypt from "bcryptjs";
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, email, phone, password, role }: IRegisterRequest = req.body;
@@ -25,11 +25,13 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
     const user = await User.create({
       name,
       email,
       phone,
-      password,
+      password: hashedPassword,
       role: role || "member"
     });
 
@@ -66,6 +68,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password }: ILoginRequest = req.body;
+    
     if (!email || !password) {
       res.status(400).json({
         success: false,
@@ -84,8 +87,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Compare password
-    const isPasswordValid = await (user as any).comparePassword(password);
+    // ⚠️ FIXED: Compare password using bcrypt directly
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       res.status(401).json({
         success: false,

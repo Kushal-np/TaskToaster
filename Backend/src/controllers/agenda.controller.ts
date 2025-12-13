@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import { Request, Response } from "express";
+import { Response } from "express";
 import { Agenda } from "../model/agenda.model";
 import Meeting from "../model/meeting.model";
-import { IAgendaItem } from "../types"; 
+import { IAgendaItemInput } from "../types";
 import { AuthRequest } from "../middleware/auth.middleware";
 
 export const createAgenda = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -39,11 +39,10 @@ export const createAgenda = async (req: AuthRequest, res: Response): Promise<voi
       return;
     }
 
-    // Map items dynamically and type-safe
-    const mappedItems: IAgendaItem[] = items.map((item: any, index: number) => ({
+    const mappedItems: IAgendaItemInput[] = items.map((item: any, index: number) => ({
       time: item.time,
       role: item.role,
-      assignedTo: item.assignedTo || new mongoose.Types.ObjectId(item.assignedTo) ,
+      assignedTo: item.assignedTo || null,
       assignedToModel: item.assignedToModel || "User",
       assignedToName: item.assignedToName || "",
       allocatedTime: item.allocatedTime,
@@ -71,37 +70,83 @@ export const createAgenda = async (req: AuthRequest, res: Response): Promise<voi
   }
 };
 
-
 export const updateAgenda = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { meetingId } = req.params;
     const { items } = req.body;
 
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      res.status(400).json({
+        success: false,
+        message: "Items array is required and cannot be empty",
+      });
+      return;
+    }
+
+    const mappedItems: IAgendaItemInput[] = items.map((item: any, index: number) => ({
+      time: item.time,
+      role: item.role,
+      assignedTo: item.assignedTo || null,
+      assignedToModel: item.assignedToModel || "User",
+      assignedToName: item.assignedToName || "",
+      allocatedTime: item.allocatedTime,
+      sequence: index + 1,
+    }));
+
     const agenda = await Agenda.findOneAndUpdate(
-      { meetingId : new mongoose.Types.ObjectId(meetingId) },
-      { items },
+      { meetingId: new mongoose.Types.ObjectId(meetingId) },
+      { items: mappedItems },
       { new: true, runValidators: true }
     );
 
     if (!agenda) {
       res.status(404).json({
         success: false,
-        message: 'Agenda not found'
+        message: "Agenda not found",
       });
       return;
     }
 
     res.status(200).json({
       success: true,
-      message: 'Agenda updated successfully',
-      data: agenda
+      message: "Agenda updated successfully",
+      data: agenda,
     });
   } catch (error: any) {
-    console.error('Update agenda error:', error);
+    console.error("Update agenda error:", error);
     res.status(500).json({
       success: false,
-      message: 'Error updating agenda',
-      error: error.message
+      message: "Error updating agenda",
+      error: error.message,
+    });
+  }
+};
+
+export const getAgenda = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { meetingId } = req.params;
+
+    const agenda = await Agenda.findOne({ meetingId: new mongoose.Types.ObjectId(meetingId) })
+      .populate("items.assignedTo", "name email phone");
+
+    if (!agenda) {
+      res.status(404).json({
+        success: false,
+        message: "Agenda not found",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      data: agenda,
+    });
+  } catch (error: any) {
+    console.error("Get agenda error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching agenda",
+      error: error.message,
     });
   }
 };

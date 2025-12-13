@@ -1,5 +1,5 @@
 import mongoose , {Schema} from "mongoose" ; 
-import { IAgenda } from "../types";
+import { IAgenda} from "../types";
 
 const agendaSchema = new Schema<IAgenda>(
     {

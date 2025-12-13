@@ -5,6 +5,6 @@ import { createMeeting, getClubMeetings, getMeeting } from "../controllers/meeti
 const router = Router();
 
 router.post("/createMeeting" , authMiddleware , createMeeting );
-router.get("/getMeetings" , authMiddleware , getMeeting )
-router.get("/getClubMeetings" , authMiddleware , getClubMeetings)
+router.get("/getMeetings/:clubid" , authMiddleware , getMeeting )
+router.get("/getClubMeetings/:clubid" , authMiddleware , getClubMeetings)
 export default router ; 
