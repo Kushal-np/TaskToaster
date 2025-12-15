@@ -11,22 +11,14 @@ import {
 
 const router = Router();
 
-// Create individual agenda item
-router.post(
-  "/meetings/:meetingId/items",
-  authMiddleware,
-  authorizedRoles("member", "TMOD", "club_admin"),
-  createAgendaItem
-);
+router.post("/meetings/:meetingId/items",authMiddleware,authorizedRoles("member", "TMOD", "club_admin"),createAgendaItem);
 
-// Get all agenda items for a meeting
 router.get(
   "/meetings/:meetingId/items",
   authMiddleware,
   getAgendaItems
 );
 
-// Update specific agenda item
 router.put(
   "/items/:id",
   authMiddleware,
@@ -34,7 +26,6 @@ router.put(
   updateAgendaItem
 );
 
-// Delete agenda item
 router.delete(
   "/items/:id",
   authMiddleware,
@@ -42,7 +33,6 @@ router.delete(
   deleteAgendaItem
 );
 
-// Apply template to create multiple items at once
 router.post(
   "/meetings/:meetingId/apply-template",
   authMiddleware,
@@ -50,7 +40,6 @@ router.post(
   applyTemplate
 );
 
-// Bulk reorder agenda items
 router.put(
   "/meetings/:meetingId/reorder",
   authMiddleware,
