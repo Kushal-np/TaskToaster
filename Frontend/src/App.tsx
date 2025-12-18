@@ -1,9 +1,16 @@
+import { Toaster } from 'react-hot-toast';
+import { AppRoutes } from './routes';
+import ErrorBoundary from './components/shared/ErrorBoundary';
 
-function App() {
-
+const App  = () => {
   return (
-    <div>Task Toaster</div>
-  )
-}
+    <>
+      <ErrorBoundary>
+        <Toaster position="top-right" reverseOrder={false} />
+        <AppRoutes />
+      </ErrorBoundary>
+    </>
+  );
+};
 
-export default App
+export default App;
