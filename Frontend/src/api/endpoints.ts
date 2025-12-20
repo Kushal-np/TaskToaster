@@ -21,9 +21,9 @@ export const CLUB_ENDPOINTS = {
   CREATE: '/v1/club/create',
   JOIN: '/v1/club/join',
   GET_MY_CLUBS: '/v1/club/getMyclub',
+  GET_BY_ID: (id: string) => `/v1/club/${id}`,   // ✅ ADD THIS
   UPDATE: (id: string) => `/v1/club/updateClub/${id}`,
 };
-
 /**
  * Dashboard data endpoints.
  */

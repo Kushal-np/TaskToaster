@@ -1,8 +1,19 @@
-const defaultRoles = ['SAA', 'Presiding Officer', 'TMoD', 'General Evaluator', 'Timer', 'Ah-Counter', 'Grammarian', 'Speaker', 'Evaluator', 'Table Topics Master'];
+const defaultRoles = [
+  'SAA', 
+  'Presiding Officer', 
+  'TMoD', 
+  'General Evaluator', 
+  'Timer', 
+  'Ah-Counter', 
+  'Grammarian', 
+  'Speaker', 
+  'Evaluator', 
+  'Table Topics Master'
+];
 
 const RolePalette = () => {
   return (
-    <div className="rounded-lg border p-4">
+    <div className="rounded-lg border p-4 bg-white">
       <h4 className="font-semibold mb-2">Role Palette</h4>
       <div className="flex flex-wrap gap-2">
         {defaultRoles.map(role => (

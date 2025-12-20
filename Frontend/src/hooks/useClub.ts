@@ -1,4 +1,4 @@
-// src/hooks/useClubs.ts
+// src/hooks/useClub.ts
 import { useQuery } from '@tanstack/react-query';
 import { clubService } from '../services/clubService';
 
@@ -7,12 +7,5 @@ export const useClub = (clubId?: string) => {
     queryKey: ['club', clubId],
     queryFn: () => clubService.getClubById(clubId!),
     enabled: !!clubId,
-  });
-};
-
-export const useClubs = () => {
-  return useQuery({
-    queryKey: ['clubs'],
-    queryFn: () => clubService.getMyClubs(),
   });
 };

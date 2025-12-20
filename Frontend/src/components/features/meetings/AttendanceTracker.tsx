@@ -8,7 +8,7 @@ const mockMembers = [
 
 const AttendanceTracker = () => {
   return (
-    <div>
+    <div className="bg-white p-4 rounded-lg shadow">
       <h4 className="font-semibold mb-2">Attendance</h4>
       <div className="space-y-2">
         {mockMembers.map(member => (

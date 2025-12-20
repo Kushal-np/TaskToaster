@@ -24,7 +24,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: "https://id-preview--8de08d0d-ac1a-4c96-9665-b4635327a554.lovable.app",
+  origin: "http://localhost:5173",
   credentials: true
 }));
 app.use(express.json());

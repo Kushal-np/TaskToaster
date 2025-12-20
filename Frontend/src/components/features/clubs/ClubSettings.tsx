@@ -1,13 +1,29 @@
-import type { IClub } from '../../../types';
+// src/components/features/clubs/ClubSettings.tsx
+import type { IClub, ICreateClubRequest } from '../../../types';
 import ClubForm from './ClubForm';
 
-const ClubSettings = ({ club }: { club: IClub }) => {
-  // This component would wrap ClubForm and provide an onSubmit handler
-  // that calls the `updateClub` mutation.
+interface ClubSettingsProps {
+  club: IClub;
+  onSubmit: (data: ICreateClubRequest) => void;
+  isLoading?: boolean;
+}
+
+const ClubSettings = ({ club, onSubmit, isLoading }: ClubSettingsProps) => {
   return (
-    <div className="rounded-lg border-2 border-dashed border-gray-300 p-8 text-center text-gray-500">
-      <p>Club Settings Form Placeholder</p>
-      {/* <ClubForm defaultValues={club} onSubmit={handleUpdate} /> */}
+    <div>
+      <ClubForm 
+        defaultValues={{
+          clubName: club.clubName,
+          clubNumber: club.clubNumber,
+          region: club.region,
+          district: club.district,
+          division: club.division,
+          area: club.area,
+          charteredDate: club.charteredDate.split('T')[0] // Format date for input
+        }}
+        onSubmit={onSubmit}
+        isLoading={isLoading}
+      />
     </div>
   );
 };

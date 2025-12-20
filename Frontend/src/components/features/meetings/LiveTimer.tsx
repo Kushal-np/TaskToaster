@@ -11,9 +11,11 @@ const LiveTimer = () => {
         setTime((time) => time + 1);
       }, 1000);
     } else if (!isActive && time !== 0) {
-      clearInterval(interval!);
+      if (interval) clearInterval(interval);
     }
-    return () => clearInterval(interval!);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [isActive, time]);
 
   const formatTime = (timeInSeconds: number) => {

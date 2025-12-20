@@ -2,7 +2,7 @@ import { Response } from "express";
 import { AuthRequest } from "../middleware/auth.middleware";
 import { Club } from "../model/club.model";
 import { User } from "../model/user.model";
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 export const createClub = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
@@ -182,3 +182,50 @@ export const updateClub = async(req:AuthRequest , res:Response) => {
         })
     }
 }
+
+export const getClubById = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const userId = req.user?._id;
+    const { id } = req.params;
+
+    // Validate if the id is a valid MongoDB ObjectId
+    if (!Types.ObjectId.isValid(new mongoose.Types.ObjectId(id))) {
+      res.status(400).json({
+        success: false,
+        message: "Invalid club ID format"
+      });
+      return;
+    }
+
+    const club = await Club.findById(id);
+
+    if (!club) {
+      res.status(404).json({
+        success: false,
+        message: "Club not found"
+      });
+      return;
+    }
+
+    // Check if user is a member of the club
+    if (!club.members.includes(userId as any)) {
+      res.status(403).json({
+        success: false,
+        message: "You don't have access to this club"
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      data: club
+    });
+  } catch (error) {
+    console.error("Get club by ID error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching club details",
+      error: error instanceof Error ? error.message : "Unknown error"
+    });
+  }
+};

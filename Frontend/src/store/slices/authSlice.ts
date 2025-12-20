@@ -1,55 +1,68 @@
+// src/store/slices/authSlice.ts
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-
-interface User {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  [key: string]: any;
-}
+import type { IUser } from '../../types';
 
 interface AuthState {
-  user: User | null;
-  token: string | null;
+  user: IUser | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
+  error: string | null;
 }
 
-const getUserFromStorage = (): User | null => {
+// Helper to check if user exists in localStorage
+const getUserFromStorage = (): IUser | null => {
   try {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
-  } catch (error) {
+  } catch {
     return null;
   }
 };
 
+// For cookie-based auth, we don't store token in localStorage
+// We only store user data and check authentication via API
 const initialState: AuthState = {
   user: getUserFromStorage(),
-  token: localStorage.getItem('token'),
-  isAuthenticated: !!localStorage.getItem('token'),
+  isAuthenticated: false, // Will be set to true after successful getMe check
+  isLoading: false,
+  error: null,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setCredentials: (state, action: PayloadAction<{ user: User; token: string }>) => {
-      const { user, token } = action.payload;
+    setCredentials: (state, action: PayloadAction<{ user: IUser }>) => {
+      const { user } = action.payload;
       state.user = user;
-      state.token = token;
       state.isAuthenticated = true;
+      state.error = null;
+      
+      // Store user in localStorage (but not token)
       localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('token', token);
     },
+
     logout: (state) => {
       state.user = null;
-      state.token = null;
       state.isAuthenticated = false;
+      
+      // Clear user from localStorage
       localStorage.removeItem('user');
-      localStorage.removeItem('token');
+    },
+
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
+    },
+
+    clearError: (state) => {
+      state.error = null;
     },
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, logout, setLoading, setError, clearError } = authSlice.actions;
 export default authSlice.reducer;

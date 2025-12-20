@@ -136,7 +136,7 @@ export const logout = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: false,
       sameSite: "strict",
-      maxAge: 0, // Changed to 0 to immediately expire the cookie
+      maxAge: 0, 
     });
     res.json({
       success: true,

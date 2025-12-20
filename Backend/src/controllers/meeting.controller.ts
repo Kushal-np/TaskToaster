@@ -179,8 +179,6 @@ export const getMeetingById = async (req: AuthRequest, res: Response): Promise<v
       .populate('clubId', 'clubName clubNumber')
       .populate('toastmasterOfDay', 'name email phone')
       .populate('createdBy', 'name email')
-      .populate('attendees', 'name email')
-      .populate('guestAttendees', 'name email');
 
     if (!meeting) {
       res.status(404).json({

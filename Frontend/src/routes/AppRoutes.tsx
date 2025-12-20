@@ -23,7 +23,6 @@ import JoinClubPage from '../pages/onboarding/JoinClubPage';
 import SetupCompletePage from '../pages/onboarding/SetupCompletePage';
 
 // Main App Pages
-import DashboardPage from '../pages/dashboard/DashboardPage';
 import NotificationsPage from '../pages/dashboard/NotificationsPage';
 import ProfilePage from '../pages/profile/ProfilePage';
 import EditProfilePage from '../pages/profile/EditProfilePage';
@@ -54,9 +53,13 @@ import MyRSVPsPage from '../pages/events/MyRSVPsPage';
 import TemplateGalleryPage from '../pages/templates/TemplateGalleryPage';
 import CreateTemplatePage from '../pages/templates/CreateTemplatePage';
 import EditTemplatePage from '../pages/templates/EditTemplatePage';
+import DashboardPage from '../pages/dashboard/DashboardPage';
+import Navbar from '../components/layout/Navbar';
 
 const AppRoutes = () => {
   return (
+    <div>
+      <Navbar/>
     <Routes>
       {/* Public Routes */}
       <Route element={<PublicRoutes />}>
@@ -103,7 +106,7 @@ const AppRoutes = () => {
 
           {/* Meetings */}
           <Route path="/meetings" element={<MeetingCalendarPage />} />
-          <Route path="/meetings/create" element={<CreateMeetingPage />} />
+          <Route path="/meetings/create/:clubId" element={<CreateMeetingPage />} />
           <Route path="/meetings/:id" element={<MeetingDetailPage />} />
           <Route path="/meetings/:id/edit" element={<EditMeetingPage />} />
           <Route path="/meetings/:id/agenda" element={<AgendaBuilderPage />} />
@@ -129,6 +132,7 @@ const AppRoutes = () => {
         </Route>
       </Route>
     </Routes>
+    </div>
   );
 };
 

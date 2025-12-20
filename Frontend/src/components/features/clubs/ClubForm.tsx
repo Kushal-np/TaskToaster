@@ -7,52 +7,119 @@ interface ClubFormProps {
   onSubmit: (data: ICreateClubRequest) => void;
   isLoading?: boolean;
   defaultValues?: Partial<ICreateClubRequest>;
+  submitButtonText?: string;
 }
 
-const ClubForm = ({ onSubmit, isLoading, defaultValues }: ClubFormProps) => {
-  const { register, handleSubmit, formState: { errors } } = useForm<ICreateClubRequest>({ defaultValues });
+const ClubForm = ({ 
+  onSubmit, 
+  isLoading, 
+  defaultValues,
+  submitButtonText = 'Create Club'
+}: ClubFormProps) => {
+  const { register, handleSubmit, formState: { errors } } = useForm<ICreateClubRequest>({
+    defaultValues: defaultValues || {
+      clubName: '',
+      clubNumber: '',
+      region: '',
+      district: '',
+      division: '',
+      area: '',
+      charteredDate: '',
+    }
+  });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div>
-          <label>Club Name</label>
-          <Input {...register('clubName', { required: 'Club Name is required' })} />
-          {errors.clubName && <p className="mt-1 text-sm text-red-600">{errors.clubName.message}</p>}
+          <label htmlFor="clubName" className="block text-sm font-medium text-gray-700 mb-1">
+            Club Name *
+          </label>
+          <Input
+            id="clubName"
+            {...register('clubName', { required: 'Club name is required' })}
+            placeholder="Enter club name"
+            error={errors.clubName?.message}
+          />
         </div>
+
         <div>
-          <label>Club Number</label>
-          <Input {...register('clubNumber', { required: 'Club Number is required' })} />
-          {errors.clubNumber && <p className="mt-1 text-sm text-red-600">{errors.clubNumber.message}</p>}
+          <label htmlFor="clubNumber" className="block text-sm font-medium text-gray-700 mb-1">
+            Club Number *
+          </label>
+          <Input
+            id="clubNumber"
+            {...register('clubNumber', { required: 'Club number is required' })}
+            placeholder="e.g., 12345"
+            error={errors.clubNumber?.message}
+          />
         </div>
+
         <div>
-          <label>Region</label>
-          <Input {...register('region', { required: 'Region is required' })} />
-          {errors.region && <p className="mt-1 text-sm text-red-600">{errors.region.message}</p>}
+          <label htmlFor="region" className="block text-sm font-medium text-gray-700 mb-1">
+            Region *
+          </label>
+          <Input
+            id="region"
+            {...register('region', { required: 'Region is required' })}
+            placeholder="Enter region"
+            error={errors.region?.message}
+          />
         </div>
+
         <div>
-          <label>District</label>
-          <Input {...register('district', { required: 'District is required' })} />
-          {errors.district && <p className="mt-1 text-sm text-red-600">{errors.district.message}</p>}
+          <label htmlFor="district" className="block text-sm font-medium text-gray-700 mb-1">
+            District *
+          </label>
+          <Input
+            id="district"
+            {...register('district', { required: 'District is required' })}
+            placeholder="Enter district"
+            error={errors.district?.message}
+          />
         </div>
+
         <div>
-          <label>Division</label>
-          <Input {...register('division', { required: 'Division is required' })} />
-          {errors.division && <p className="mt-1 text-sm text-red-600">{errors.division.message}</p>}
+          <label htmlFor="division" className="block text-sm font-medium text-gray-700 mb-1">
+            Division *
+          </label>
+          <Input
+            id="division"
+            {...register('division', { required: 'Division is required' })}
+            placeholder="Enter division"
+            error={errors.division?.message}
+          />
         </div>
+
         <div>
-          <label>Area</label>
-          <Input {...register('area', { required: 'Area is required' })} />
-          {errors.area && <p className="mt-1 text-sm text-red-600">{errors.area.message}</p>}
+          <label htmlFor="area" className="block text-sm font-medium text-gray-700 mb-1">
+            Area *
+          </label>
+          <Input
+            id="area"
+            {...register('area', { required: 'Area is required' })}
+            placeholder="Enter area"
+            error={errors.area?.message}
+          />
+        </div>
+
+        <div className="sm:col-span-2">
+          <label htmlFor="charteredDate" className="block text-sm font-medium text-gray-700 mb-1">
+            Chartered Date *
+          </label>
+          <Input
+            id="charteredDate"
+            type="date"
+            {...register('charteredDate', { required: 'Chartered date is required' })}
+            error={errors.charteredDate?.message}
+          />
         </div>
       </div>
-      <div>
-        <label>Chartered Date</label>
-        <Input type="date" {...register('charteredDate', { required: 'Chartered Date is required' })} />
-        {errors.charteredDate && <p className="mt-1 text-sm text-red-600">{errors.charteredDate.message}</p>}
-      </div>
-      <div className="flex justify-end pt-4">
-        <Button type="submit" isLoading={isLoading}>{defaultValues ? 'Save Changes' : 'Create Club'}</Button>
+
+      <div className="flex justify-end space-x-3 pt-4 border-t">
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? 'Saving...' : submitButtonText}
+        </Button>
       </div>
     </form>
   );

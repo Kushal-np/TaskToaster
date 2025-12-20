@@ -1,40 +1,50 @@
+// src/pages/auth/RegisterPage.tsx
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
+import { useMutation } from '@tanstack/react-query';
 import { registerSchema } from '../../utils/validation';
 import { Button } from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
+import { registerUser } from '../../services/authService';
+import { useToast } from '../../hooks/useToast';
+import { useAuth } from '../../hooks/useAuth';
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const toast = useToast();
+  const { login } = useAuth();
 
   const {
     register,
     handleSubmit,
-    setError,
-    formState: { errors },
   } = useForm<RegisterFormData>();
 
-  const onSubmit = (data: RegisterFormData) => {
-    const result = registerSchema.safeParse(data);
-
-    if (!result.success) {
-      result.error.issues.forEach((err) => {
-        const fieldName = err.path[0] as keyof RegisterFormData;
-
-        setError(fieldName, {
-          type: 'manual',
-          message: err.message,
-        });
+  const mutation = useMutation({
+    mutationFn: registerUser,
+    onSuccess: (data) => {
+      // Auto-login after registration
+      login({
+        email: data.user.email,
+        password: data.user.password, // Note: you might need to store password temporarily
+      }).then(() => {
+        toast.success('Registration successful!');
+        navigate('/dashboard');
+      }).catch(() => {
+        // If auto-login fails, redirect to login page
+        toast.success('Registration successful! Please login.');
+        navigate('/login');
       });
-      return;
-    }
+    },
+    onError: (error: any) => {
+      toast.error(error.message || 'Registration failed');
+    },
+  });
 
-    console.log('Register data:', result.data);
-    // call auth service here
-    navigate('/onboarding');
+  const onSubmit = (data: RegisterFormData) => {
+    mutation.mutate(data);
   };
 
   return (
@@ -47,46 +57,40 @@ const RegisterPage = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label>Full Name</label>
-            <Input {...register('name')} />
-            {errors.name && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.name.message}
-              </p>
-            )}
+            <Input 
+              {...register('name')} 
+            />
           </div>
 
           <div>
             <label>Email</label>
-            <Input type="email" {...register('email')} />
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.email.message}
-              </p>
-            )}
+            <Input 
+              type="email" 
+              {...register('email')} 
+            />
           </div>
 
           <div>
             <label>Phone Number</label>
-            <Input {...register('phone')} />
-            {errors.phone && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.phone.message}
-              </p>
-            )}
+            <Input 
+              {...register('phone')} 
+            />
           </div>
 
           <div>
             <label>Password</label>
-            <Input type="password" {...register('password')} />
-            {errors.password && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.password.message}
-              </p>
-            )}
+            <Input 
+              type="password" 
+              {...register('password')} 
+            />
           </div>
 
-          <Button type="submit" className="w-full">
-            Register
+          <Button 
+            type="submit" 
+            className="w-full" 
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? 'Registering...' : 'Register'}
           </Button>
         </form>
 
