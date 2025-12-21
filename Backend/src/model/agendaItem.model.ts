@@ -92,9 +92,6 @@ agendaItemSchema.pre("save", async function () {
 
     const assignedPerson = await Model.findById(this.assignedTo).select("name");
 
-    if (assignedPerson) {
-      this.assignedToName = assignedPerson.name;
-    }
   }
 });
 
