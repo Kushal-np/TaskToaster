@@ -3,18 +3,13 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import {
   ArrowLeftIcon,
-  CalendarDaysIcon,
-  ClockIcon,
-  MapPinIcon,
-  VideoCameraIcon,
-  ChatBubbleLeftRightIcon,
+
 } from '@heroicons/react/24/outline';
 import { Button } from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Textarea from '../../components/ui/Textarea';
 import Card from '../../components/ui/Card';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
-import EmptyState from '../../components/ui/EmptyState';
 import { useMeeting, useUpdateMeeting } from '../../hooks/useMeetings';
 import { useEffect } from 'react';
 
@@ -74,13 +69,16 @@ const EditMeetingPage = () => {
   const onSubmit = async (data: FormData) => {
     if (!id) return;
 
-    // Convert textarea into array of objects for Mongoose
+    // Convert textarea into array of objects with both url and name
     const resourceLinks =
       data.resourceLinksText
         ?.split('\n')
         .map(link => link.trim())
         .filter(Boolean)
-        .map(link => ({ url: link })) || [];
+        .map(link => ({ 
+          url: link,
+          name: link // Use the URL as the name, or extract a better name if needed
+        })) || [];
 
     const updateData = {
       theme: data.theme,
@@ -112,19 +110,20 @@ const EditMeetingPage = () => {
     );
   }
 
-  if (error || !meeting) {
-    return (
-      <EmptyState
-        title="Meeting Not Found"
-        message="The meeting you're trying to edit doesn't exist or you don't have access."
-        action={
-          <Link to="/meetings">
-            <Button>Back to Meetings</Button>
-          </Link>
-        }
-      />
-    );
-  }
+if (error || !meeting) {
+  return (
+    <div className="max-w-md mx-auto mt-24 text-center space-y-4">
+      <h2 className="text-2xl font-bold text-gray-900">Meeting Not Found</h2>
+      <p className="text-gray-600">
+        The meeting you're trying to edit doesn't exist or you don't have access.
+      </p>
+      <Link to="/meetings">
+        <Button>Back to Meetings</Button>
+      </Link>
+    </div>
+  );
+}
+
 
   return (
     <div className="max-w-4xl mx-auto py-6">
@@ -191,7 +190,7 @@ const EditMeetingPage = () => {
             {/* Actions */}
             <div className="flex justify-end gap-3 pt-6 border-t">
               <Link to={`/meetings/${id}`}>
-                <Button variant="outline">Cancel</Button>
+                <Button >Cancel</Button>
               </Link>
               <Button type="submit" isLoading={isPending}>
                 Save Changes

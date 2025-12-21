@@ -97,21 +97,20 @@ const Navbar = () => {
               </>
             ) : (
               <div className="flex items-center space-x-2">
-                <Button
-                  as={Link}
-                  to="/login"
-                  variant="outline"
+                <Link to="/login">
+                                <Button
                   size="sm"
                 >
                   Login
                 </Button>
-                <Button
-                  as={Link}
-                  to="/register"
+                </Link>
+
+                <Link to="/register"><Button
                   size="sm"
                 >
                   Register
-                </Button>
+                </Button></Link>
+                
               </div>
             )}
           </div>

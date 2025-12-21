@@ -22,7 +22,7 @@ const RecentActivity = ({ roles, speeches }: RecentActivityProps) => {
             {activities.slice(0, 7).map((activity) => (
               <li key={`${activity.type}-${activity._id}`} className="py-3">
                 <p className="text-sm font-medium text-gray-800">
-                  {activity.type === 'Role' ? `Took role: ${activity.role}` : `Gave speech: ${activity.title}`}
+                  {activity.type === 'Role' ? `Took role: ${activity}` : `Gave speech: ${activity}`}
                 </p>
                 <p className="text-xs text-gray-500">{activity.date.toLocaleDateString()}</p>
               </li>

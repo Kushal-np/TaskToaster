@@ -1,6 +1,6 @@
 import MeetingCard from './MeetingCard';
 import EmptyState from '../../ui/EmptyState';
-import type { IMeeting } from '../../../types';
+import type { IMeeting } from '../../../types/meeting.types';
 
 interface MeetingListProps {
   meetings: IMeeting[];

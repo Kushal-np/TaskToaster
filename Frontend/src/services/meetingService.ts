@@ -1,6 +1,6 @@
 // src/services/meetingService.ts
 import axios from 'axios';
-import type { IMeeting, ICreateMeetingRequest, IUpdateMeetingRequest } from '../types';
+import type { IMeeting, ICreateMeetingRequest, IUpdateMeetingRequest } from '../types/meeting.types';
 import { MEETING_ENDPOINTS } from '../api/endpoints';
 
 const api = axios.create({

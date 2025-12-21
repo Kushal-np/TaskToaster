@@ -8,12 +8,10 @@ interface RSVPButtonProps {
 }
 
 const RSVPButton = ({ eventId, hasRsvpd }: RSVPButtonProps) => {
-  // const [rsvp, { isLoading: isRsvping }] = useRsvpEventMutation();
-  // const [cancelRsvp, { isLoading: isCancelling }] = useCancelRsvpMutation();
-  const isLoading = false; // Placeholder
+  const isLoading = false; 
+  console.log(eventId)
 
   const handleRsvp = async () => {
-    // Logic to call rsvp or cancelRsvp mutation
     toast.success("RSVP status updated!");
   };
 

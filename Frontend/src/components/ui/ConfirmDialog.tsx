@@ -18,10 +18,10 @@ const ConfirmDialog = ({ isOpen, onClose, onConfirm, title, message, confirmText
       <div>
         <p className="text-sm text-gray-500">{message}</p>
         <div className="mt-6 flex justify-end space-x-3">
-          <Button variant="secondary" onClick={onClose}>
+          <Button onClick={onClose}>
             {cancelText}
           </Button>
-          <Button variant="danger" onClick={onConfirm} isLoading={isLoading}>
+          <Button  onClick={onConfirm} isLoading={isLoading}>
             {confirmText}
           </Button>
         </div>

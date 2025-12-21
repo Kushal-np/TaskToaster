@@ -20,9 +20,8 @@ import { format, parseISO } from 'date-fns';
 import { Button } from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
-import EmptyState from '../../components/ui/EmptyState';
 import { useMeeting, useUpdateMeetingStatus, useDeleteMeeting } from '../../hooks/useMeetings';
-import { MeetingStatus } from '../../types';
+import { MeetingStatus } from '../../types/meeting.types';
 
 const MeetingDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -87,19 +86,20 @@ const MeetingDetailPage = () => {
     );
   }
 
-  if (!meeting) {
-    return (
-      <EmptyState
-        title="Meeting Not Found"
-        message="The meeting you're looking for doesn't exist or you don't have access."
-        action={
-          <Link to="/clubs">
-            <Button>Back to Clubs</Button>
-          </Link>
-        }
-      />
-    );
-  }
+if (!meeting) {
+  return (
+    <div className="max-w-md mx-auto mt-24 text-center space-y-4">
+      <h2 className="text-2xl font-bold text-gray-900">Meeting Not Found</h2>
+      <p className="text-gray-600">
+        The meeting you're looking for doesn't exist or you don't have access.
+      </p>
+      <Link to="/clubs">
+        <Button>Back to Clubs</Button>
+      </Link>
+    </div>
+  );
+}
+
 
   const club = typeof meeting.clubId === 'object' ? meeting.clubId : null;
   const toastmaster = typeof meeting.toastmasterOfDay === 'object' ? meeting.toastmasterOfDay : null;
@@ -134,7 +134,7 @@ const MeetingDetailPage = () => {
 
           <div className="flex flex-wrap gap-3">
             <Link to={`/meetings/${id}/edit`}>
-              <Button variant="outline">
+              <Button>
                 <PencilIcon className="h-4 w-4 mr-2" />
                 Edit
               </Button>
@@ -161,7 +161,6 @@ const MeetingDetailPage = () => {
 
             {meeting.status === 'draft' && (
               <Button
-                variant="danger"
                 onClick={() => setShowDeleteConfirm(true)}
                 isLoading={isDeleting}
               >
@@ -274,7 +273,7 @@ const MeetingDetailPage = () => {
                 <div className="flex justify-between items-center">
                   <h3 className="font-medium text-gray-900">Meeting Agenda</h3>
                   <Link to={`/meetings/${id}/agenda`}>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm">
                       Edit Agenda
                     </Button>
                   </Link>
@@ -299,7 +298,7 @@ const MeetingDetailPage = () => {
                   <div className="text-center py-8">
                     <p className="text-gray-500">No agenda items yet</p>
                     <Link to={`/meetings/${id}/agenda`}>
-                      <Button variant="outline" className="mt-2">
+                      <Button  className="mt-2">
                         Create Agenda
                       </Button>
                     </Link>
@@ -413,10 +412,10 @@ const MeetingDetailPage = () => {
               Are you sure you want to delete this meeting? This cannot be undone.
             </p>
             <div className="flex justify-end space-x-3">
-              <Button variant="outline" onClick={() => setShowDeleteConfirm(false)}>
+              <Button  onClick={() => setShowDeleteConfirm(false)}>
                 Cancel
               </Button>
-              <Button variant="danger" onClick={handleDelete} isLoading={isDeleting}>
+              <Button  onClick={handleDelete} isLoading={isDeleting}>
                 Delete Meeting
               </Button>
             </div>

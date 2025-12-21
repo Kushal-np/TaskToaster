@@ -18,7 +18,7 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
           <h1 className="text-2xl font-bold text-gray-900">{user.name}</h1>
           <p className="text-sm font-medium text-gray-500">{user.email}</p>
         </div>
-        <div className="flex-grow flex justify-end"><Link to="/profile/edit"><Button variant="secondary">Edit Profile</Button></Link></div>
+        <div className="flex-grow flex justify-end"><Link to="/profile/edit"><Button>Edit Profile</Button></Link></div>
       </div>
     </div>
   );

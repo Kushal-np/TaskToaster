@@ -13,7 +13,7 @@ interface SpeechFormProps {
 }
 
 const SpeechForm = ({ onSubmit, isLoading, defaultValues }: SpeechFormProps) => {
-  const { register, handleSubmit, formState: { errors } } = useForm<SpeechFormData>({ defaultValues });
+  const { register, handleSubmit, formState: { } } = useForm<SpeechFormData>({ defaultValues });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

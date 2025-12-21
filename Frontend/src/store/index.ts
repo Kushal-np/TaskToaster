@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
 import authReducer from './slices/authSlice';
 import uiReducer from './slices/uiSlice';
 import meetingReducer from './slices/meetingSlice';

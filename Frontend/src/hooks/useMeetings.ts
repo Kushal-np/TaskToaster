@@ -1,12 +1,16 @@
 // src/hooks/useMeetings.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { meetingService } from '../services/meetingService';
-import type { IMeeting, ICreateMeetingRequest, IUpdateMeetingRequest } from '../types';
+import type {
+  IMeeting,
+  ICreateMeetingRequest,
+  IUpdateMeetingRequest,
+} from '../types/meeting.types';
 
 // ========== QUERY HOOKS (Read operations) ==========
 
 export const useClubMeetings = (clubId?: string) => {
-  return useQuery({
+  return useQuery<IMeeting[], Error>({
     queryKey: ['club-meetings', clubId],
     queryFn: () => meetingService.getClubMeetings(clubId!),
     enabled: !!clubId,
@@ -14,16 +18,16 @@ export const useClubMeetings = (clubId?: string) => {
 };
 
 export const useAllClubMeetings = (clubId?: string) => {
-  return useQuery({
+  return useQuery<IMeeting[], Error>({
     queryKey: ['all-club-meetings', clubId],
     queryFn: () => meetingService.getAllClubMeetings(clubId!),
     enabled: !!clubId,
   });
 };
 
-// ✅ ADD THIS HOOK - Get single meeting by ID
+// ✅ Get single meeting by ID
 export const useMeeting = (meetingId?: string) => {
-  return useQuery({
+  return useQuery<IMeeting, Error>({
     queryKey: ['meeting', meetingId],
     queryFn: () => meetingService.getMeetingById(meetingId!),
     enabled: !!meetingId,
@@ -32,27 +36,31 @@ export const useMeeting = (meetingId?: string) => {
 
 // ========== MUTATION HOOKS (Write operations) ==========
 
-// ✅ Update this hook to match the EditMeetingPage's expected signature
+// ✅ Update meeting
 export const useUpdateMeeting = () => {
   const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: ({ meetingId, meetingData }: { meetingId: string; meetingData: IUpdateMeetingRequest }) => 
+
+  return useMutation<
+    IMeeting,
+    Error,
+    { meetingId: string; meetingData: IUpdateMeetingRequest }
+  >({
+    mutationFn: ({ meetingId, meetingData }) =>
       meetingService.updateMeeting(meetingId, meetingData),
     onSuccess: (data) => {
-      // Invalidate specific meeting and club meetings
       queryClient.invalidateQueries({ queryKey: ['meeting', data._id] });
       queryClient.invalidateQueries({ queryKey: ['club-meetings', data.clubId] });
+      queryClient.invalidateQueries({ queryKey: ['all-club-meetings', data.clubId] });
     },
   });
 };
 
-// ✅ Add this hook for creating meetings
+// ✅ Create meeting
 export const useCreateMeeting = () => {
   const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: (payload: ICreateMeetingRequest) => meetingService.createMeeting(payload),
+
+  return useMutation<IMeeting, Error, ICreateMeetingRequest>({
+    mutationFn: (payload) => meetingService.createMeeting(payload),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['club-meetings', data.clubId] });
       queryClient.invalidateQueries({ queryKey: ['all-club-meetings', data.clubId] });
@@ -60,28 +68,34 @@ export const useCreateMeeting = () => {
   });
 };
 
-// ✅ Add this hook for deleting meetings
+// ✅ Delete meeting
 export const useDeleteMeeting = () => {
   const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: (meetingId: string) => meetingService.deleteMeeting(meetingId),
+
+  return useMutation<void, Error, string>({
+    mutationFn: (meetingId) => meetingService.deleteMeeting(meetingId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['club-meetings'] });
+      queryClient.invalidateQueries({ queryKey: ['all-club-meetings'] });
     },
   });
 };
 
-// ✅ Add this hook for updating meeting status
+// ✅ Update meeting status
 export const useUpdateMeetingStatus = () => {
   const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: ({ meetingId, status }: { meetingId: string; status: string }) => 
+
+  return useMutation<
+    IMeeting,
+    Error,
+    { meetingId: string; status: string }
+  >({
+    mutationFn: ({ meetingId, status }) =>
       meetingService.updateMeetingStatus(meetingId, status),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['meeting', data._id] });
       queryClient.invalidateQueries({ queryKey: ['club-meetings', data.clubId] });
+      queryClient.invalidateQueries({ queryKey: ['all-club-meetings', data.clubId] });
     },
   });
 };

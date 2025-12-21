@@ -23,7 +23,7 @@ const TemplatePreview = ({ template }: TemplatePreviewProps) => {
           </TableHeader>
           <TableBody>
             {template.items.sort((a, b) => a.sequence - b.sequence).map((item, index) => (
-              <TableRow key={index}><TableCell>{item.time}</TableCell><TableCell>{item.role}</TableCell><TableCell>{item.allocatedTime}</TableCell></TableRow>
+              <TableRow key={index}><TableCell>{item.time}</TableCell><TableCell>{item.role}</TableCell><TableCell>{item.allocatedItem}</TableCell></TableRow>
             ))}
           </TableBody>
         </Table>

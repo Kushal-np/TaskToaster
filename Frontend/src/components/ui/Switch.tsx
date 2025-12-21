@@ -1,5 +1,4 @@
 import { Switch as HeadlessSwitch } from '@headlessui/react';
-import { useState } from 'react';
 
 interface SwitchProps {
   enabled: boolean;

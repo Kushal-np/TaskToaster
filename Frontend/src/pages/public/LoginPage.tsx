@@ -22,7 +22,7 @@ const LoginPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {  },
   } = useForm<LoginFormData>();
 
   const mutation = useMutation({

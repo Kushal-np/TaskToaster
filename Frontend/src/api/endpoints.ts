@@ -70,5 +70,45 @@ export const EVENT_ENDPOINTS = {
   CANCEL_RSVP: (id: string) => `/v1/event/${id}/rsvp`,
 };
 
+
+export const TEMPLATE_ENDPOINTS = {
+  CREATE: '/v1/template/create',
+  GET_ALL: '/v1/template/',
+  GET_BY_ID: (id: string) => `/v1/template/${id}`,
+  UPDATE: (id: string) => `/v1/template/${id}`,
+  DELETE: (id: string) => `/v1/template/${id}`,
+};
+
+export const GUEST_ENDPOINTS = {
+  CREATE: '/v1/guest/create',
+  GET_ALL: '/v1/guest/',
+  GET_BY_ID: (id: string) => `/v1/guest/${id}`,
+  UPDATE: (id: string) => `/v1/guest/${id}`,
+  DELETE: (id: string) => `/v1/guest/${id}`,
+};
+
+export const SPEECH_ENDPOINTS = {
+  CREATE: '/v1/speech/create',
+  GET_USER_SPEECHES: (userId: string) => `/v1/speech/user/${userId}`,
+  GET_MEETING_SPEECHES: (meetingId: string) => `/v1/speech/meeting/${meetingId}`,
+  UPDATE: (id: string) => `/v1/speech/${id}`,
+  DELETE: (id: string) => `/v1/speech/${id}`,
+};
+
+export const ROLE_HISTORY_ENDPOINTS = {
+  CREATE: '/v1/role-history/create',
+  GET_USER_HISTORY: (userId: string) => `/v1/role-history/user/${userId}`,
+  GET_MEETING_HISTORY: (meetingId: string) => `/v1/role-history/meeting/${meetingId}`,
+  UPDATE: (id: string) => `/v1/role-history/${id}`,
+  DELETE: (id: string) => `/v1/role-history/${id}`,
+};
+
+export const TABLE_TOPIC_ENDPOINTS = {
+  CREATE: '/v1/table-topic/create',
+  GET_USER_TOPICS: (userId: string) => `/v1/table-topic/user/${userId}`,
+  GET_MEETING_TOPICS: (meetingId: string) => `/v1/table-topic/meeting/${meetingId}`,
+  UPDATE: (id: string) => `/v1/table-topic/${id}`,
+  DELETE: (id: string) => `/v1/table-topic/${id}`,
+};
 // NOTE: Endpoints for guests, templates, speeches, role history, and table topics
 // would be added here following the same pattern.

@@ -9,7 +9,7 @@ const MeetingStatus = ({ status }: MeetingStatusProps) => {
   const statusConfig = {
     [MeetingStatusEnum.DRAFT]: { label: 'Draft', color: 'gray' as const },
     [MeetingStatusEnum.SCHEDULED]: { label: 'Scheduled', color: 'blue' as const },
-    [MeetingStatusEnum.ONGOING]: { label: 'Ongoing', color: 'yellow' as const },
+    [MeetingStatusEnum.IN_PROGRESS]: { label: 'Ongoing', color: 'yellow' as const },
     [MeetingStatusEnum.COMPLETED]: { label: 'Completed', color: 'green' as const },
     [MeetingStatusEnum.CANCELLED]: { label: 'Cancelled', color: 'red' as const },
   };

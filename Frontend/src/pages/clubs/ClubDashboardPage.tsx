@@ -62,23 +62,24 @@ const ClubDashboardPage = () => {
     );
   }
 
-  if (isClubError || !club) {
-    console.error('🚨 Club error or not found:', clubError);
-    return (
+if (isClubError || !club) {
+  console.error('🚨 Club error or not found:', clubError);
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
       <EmptyState
         title="Club Not Found"
         message={
-          clubError?.message || 
+          clubError?.message ||
           "The club you're looking for doesn't exist or you don't have access to it."
         }
-        action={
-          <Link to="/clubs">
-            <Button>Back to My Clubs</Button>
-          </Link>
-        }
       />
-    );
-  }
+      <Link to="/clubs">
+        <Button>Back to My Clubs</Button>
+      </Link>
+    </div>
+  );
+}
+
 
   // For now, using minimal member data - in real app, fetch actual member details
   const mockMembers = club.members?.slice(0, 6).map((memberId, index) => ({
@@ -99,13 +100,13 @@ const ClubDashboardPage = () => {
         </div>
         <div className="flex space-x-3">
           <Link to={`/clubs/${clubId}/calendar`}>
-            <Button variant="outline">
+            <Button >
               <CalendarDaysIcon className="h-5 w-5 mr-2" />
               Calendar
             </Button>
           </Link>
           <Link to={`/clubs/${clubId}/settings`}>
-            <Button variant="outline">
+            <Button >
               <Cog6ToothIcon className="h-5 w-5 mr-2" />
               Settings
             </Button>
@@ -124,7 +125,7 @@ const ClubDashboardPage = () => {
           <p className="text-sm text-gray-500">Schedule a new meeting</p>
         </Link>
         <Link
-          to={`/clubs/${clubId}/mem`}
+          to={`/clubs/${clubId}/members`}
           className="block p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-colors text-center"
         >
           <UserGroupIcon className="h-8 w-8 mx-auto text-gray-400" />

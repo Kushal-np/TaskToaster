@@ -16,7 +16,7 @@ type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPasswordPage = () => {
   const toast = useToast();
-  const { register, handleSubmit, formState: { errors } } = useForm<ForgotPasswordFormData>();
+  const { register, handleSubmit, formState: {  } } = useForm<ForgotPasswordFormData>();
 
   const mutation = useMutation({
     mutationFn: forgotPassword,

@@ -80,23 +80,25 @@ const ClubSettingsPage = () => {
     );
   }
 
-  if (isClubError || !club) {
-    console.error('🚨 Club error or not found in settings:', clubError);
-    return (
+if (isClubError || !club) {
+  console.error('🚨 Club error or not found in settings:', clubError);
+
+  return (
+    <div className="flex flex-col items-center space-y-6">
       <EmptyState
         title="Club Not Found"
         message={
-          clubError?.message || 
+          clubError?.message ||
           "The club you're looking for doesn't exist or you don't have access to it."
         }
-        action={
-          <Link to="/clubs">
-            <Button>Back to My Clubs</Button>
-          </Link>
-        }
       />
-    );
-  }
+      <Link to="/clubs">
+        <Button>Back to My Clubs</Button>
+      </Link>
+    </div>
+  );
+}
+
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -153,7 +155,6 @@ const ClubSettingsPage = () => {
                 </p>
               </div>
               <Button
-                variant="danger"
                 onClick={() => {
                   if (window.confirm('Are you sure you want to delete this club? This action cannot be undone.')) {
                     console.log('Delete club:', clubId);
@@ -172,7 +173,6 @@ const ClubSettingsPage = () => {
                 </p>
               </div>
               <Button
-                variant="outline"
                 onClick={() => {
                   if (window.confirm('Are you sure you want to leave this club?')) {
                     console.log('Leave club:', clubId);

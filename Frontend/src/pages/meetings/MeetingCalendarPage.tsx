@@ -31,24 +31,25 @@ const MeetingCalendarPage = () => {
     );
   }
 
-  if (!clubs || clubs.length === 0) {
-    return (
-      <EmptyState
-        title="No Clubs Found"
-        message="You need to join or create a club before viewing meetings."
-        action={
-          <div className="flex gap-3">
-            <Link to="/onboarding/create-club">
-              <Button>Create Club</Button>
-            </Link>
-            <Link to="/onboarding/join-club">
-              <Button variant="outline">Join Club</Button>
-            </Link>
-          </div>
-        }
-      />
-    );
-  }
+if (!clubs || clubs.length === 0) {
+  return (
+    <div className="max-w-md mx-auto mt-24 text-center space-y-4">
+      <h2 className="text-2xl font-bold text-gray-900">No Clubs Found</h2>
+      <p className="text-gray-600">
+        You need to join or create a club before viewing meetings.
+      </p>
+      <div className="flex justify-center gap-3">
+        <Link to="/onboarding/create-club">
+          <Button>Create Club</Button>
+        </Link>
+        <Link to="/onboarding/join-club">
+          <Button>Join Club</Button>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 
   return (
     <div className="space-y-6">

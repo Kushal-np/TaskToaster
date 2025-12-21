@@ -13,7 +13,7 @@ interface RoleHistoryFormProps {
 }
 
 const RoleHistoryForm = ({ onSubmit, isLoading, defaultValues }: RoleHistoryFormProps) => {
-  const { register, handleSubmit, formState: { errors } } = useForm<RoleHistoryFormData>({ defaultValues });
+  const { register, handleSubmit, formState: { } } = useForm<RoleHistoryFormData>({ defaultValues });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

@@ -1,7 +1,9 @@
+import type { IClub } from "./club.types";
+
 export interface ITemplateItem {
   time: string;
   role: string;
-  allocatedTime: string;
+  allocatedItem: string;
   sequence: number;
   isRequired: boolean;
   description?: string;
@@ -12,7 +14,8 @@ export interface IAgendaTemplate {
   name: string;
   description?: string;
   items: ITemplateItem[];
-  clubId?: string; // Optional for default templates
+  clubId?: string | IClub; // Optional for default templates
+  clubName:string;
   isDefault: boolean;
   createdBy: string; // User ID
   timesUsed: number;

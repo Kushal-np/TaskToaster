@@ -1,4 +1,5 @@
 // src/types/meeting.types.ts
+
 export enum MeetingStatus {
   DRAFT = 'draft',
   SCHEDULED = 'scheduled',
@@ -7,49 +8,50 @@ export enum MeetingStatus {
   CANCELLED = 'cancelled'
 }
 
-// Resource link can be object with name and url
 export interface IResourceLink {
   _id?: string;
   name: string;
   url: string;
 }
 
-// src/types/index.ts
 export interface IMeeting {
   _id: string;
+  clubId: string | { _id: string; clubName: string; clubNumber: string };
+  meetingNumber: number;
   theme: string;
   meetingDate: string;
-  startTime?: string;
-  endTime?: string;
+  startTime: string;
+  toastmasterOfDay?: string | { _id: string; name: string; email: string; phone?: string };
+  status: MeetingStatus;
   venue?: string;
   venueLink?: string;
-  isHybrid?: boolean;
   onlineLink?: string;
   onlineMeetingId?: string;
   onlinePasscode?: string;
   whatsappLink?: string;
-  resourceLinks?: string[];
-  toastmasterOfDay?: string;
-  clubId: string | { _id: string; clubName: string }; // Can be string or populated object
-  createdBy?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  resourceLinks?: IResourceLink[];
+  isHybrid: boolean;
+  createdBy: string | { _id: string; name: string; email: string };
+  agendaItems?: IAgendaItem[];
+  createdAt: string;
+  updatedAt: string;
+  meeting?:string;
 }
 
-export interface IUpdateMeetingRequest {
-  theme?: string;
-  meetingDate?: string;
-  startTime?: string;
-  endTime?: string;
-  venue?: string;
-  venueLink?: string;
-  isHybrid?: boolean;
-  onlineLink?: string;
-  onlineMeetingId?: string;
-  onlinePasscode?: string;
-  whatsappLink?: string;
-  resourceLinks?: string[];
-  toastmasterOfDay?: string;
+export interface IAgendaItem {
+  _id: string;
+  meetingId: string;
+  time: string;
+  role: string;
+  assignedTo?: string | { _id: string; name: string; email: string; phone?: string };
+  assignedToModel: 'User' | 'Guest';
+  assignedToName?: string;
+  allocatedTime: string;
+  sequence: number;
+  isCompleted: boolean;
+  actualDuration?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ICreateMeetingRequest {
@@ -64,41 +66,68 @@ export interface ICreateMeetingRequest {
   onlineMeetingId?: string;
   onlinePasscode?: string;
   whatsappLink?: string;
-  resourceLinks?: IResourceLink[]; // Objects with name and url
+  resourceLinks?: IResourceLink[];
   isHybrid?: boolean;
 }
 
+export interface IResourceLink {
+  name: string;
+  url: string;
+}
+
 export interface IUpdateMeetingRequest {
+  // Basic meeting info
   theme?: string;
   meetingDate?: string;
   startTime?: string;
   toastmasterOfDay?: string;
+
+  // Venue info
   venue?: string;
   venueLink?: string;
+  isHybrid?: boolean;
+
+  // Online meeting info
   onlineLink?: string;
   onlineMeetingId?: string;
   onlinePasscode?: string;
   whatsappLink?: string;
-  resourceLinks ?: IResourceLink[];
-  isHybrid?: boolean;
+
+  // Additional resources
+  resourceLinks?: IResourceLink[];
 }
 
-export interface IAgendaItem {
-  _id: string;
+export interface ICreateAgendaItemRequest {
   meetingId: string;
-  title: string;
-  description?: string;
+  time: string;
   role: string;
-  assignedTo?: string | {
-    _id: string;
-    name: string;
-    email: string;
-    phone?: string;
-  };
-  duration: number; // in minutes
+  assignedTo?: string;
+  assignedToModel?: 'User' | 'Guest';
+  assignedToName?: string;
+  allocatedTime: string;
   sequence: number;
-  notes?: string;
-  completed?: boolean;
-  createdAt: string;
-  updatedAt: string;
+}
+
+export interface IUpdateAgendaItemRequest {
+  time?: string;
+  role?: string;
+  assignedTo?: string;
+  assignedToModel?: 'User' | 'Guest';
+  assignedToName?: string;
+  allocatedTime?: string;
+  sequence?: number;
+  isCompleted?: boolean;
+  actualDuration?: string;
+}
+
+export interface IReorderAgendaRequest {
+  items: Array<{
+    _id: string;
+    time: string;
+    role: string;
+    assignedTo?: string;
+    assignedToModel: 'User' | 'Guest';
+    assignedToName?: string;
+    allocatedTime: string;
+  }>;
 }

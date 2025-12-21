@@ -13,7 +13,7 @@ interface TableTopicFormProps {
 }
 
 const TableTopicForm = ({ onSubmit, isLoading, defaultValues }: TableTopicFormProps) => {
-  const { register, handleSubmit, formState: { errors } } = useForm<TableTopicFormData>({ defaultValues });
+  const { register, handleSubmit, formState: { } } = useForm<TableTopicFormData>({ defaultValues });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

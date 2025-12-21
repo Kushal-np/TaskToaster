@@ -2,14 +2,12 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { ArrowLeftIcon, CalendarDaysIcon, ClockIcon, MapPinIcon, VideoCameraIcon, LinkIcon, ChatBubbleLeftRightIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { ArrowLeftIcon, CalendarDaysIcon, ClockIcon, MapPinIcon, VideoCameraIcon, ChatBubbleLeftRightIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Button } from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
-import Textarea from '../../components/ui/Textarea';
 import Card from '../../components/ui/Card';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
-import EmptyState from '../../components/ui/EmptyState';
-import type { ICreateMeetingRequest, IResourceLink } from '../../types';
+import type { ICreateMeetingRequest,  } from '../../types/meeting.types';
 import { useClub } from '../../hooks/useClubs';
 import { useCreateMeeting } from '../../hooks/useMeetings';
 
@@ -114,19 +112,20 @@ const CreateMeetingPage = () => {
     );
   }
 
-  if (!club && clubId) {
-    return (
-      <EmptyState
-        title="Club Not Found"
-        message="The club you're trying to create a meeting for doesn't exist."
-        action={
-          <Link to="/clubs">
-            <Button>Back to My Clubs</Button>
-          </Link>
-        }
-      />
-    );
-  }
+if (!club && clubId) {
+  return (
+    <div className="max-w-md mx-auto mt-24 text-center space-y-4">
+      <h2 className="text-2xl font-bold text-gray-900">Club Not Found</h2>
+      <p className="text-gray-600">
+        The club you're trying to create a meeting for doesn't exist.
+      </p>
+      <Link to="/clubs">
+        <Button>Back to My Clubs</Button>
+      </Link>
+    </div>
+  );
+}
+
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -334,7 +333,6 @@ const CreateMeetingPage = () => {
                       {resourceLinks.length > 1 && (
                         <Button
                           type="button"
-                          variant="outline"
                           size="sm"
                           onClick={() => removeResourceLink(index)}
                         >
@@ -345,7 +343,6 @@ const CreateMeetingPage = () => {
                   ))}
                   <Button
                     type="button"
-                    variant="outline"
                     size="sm"
                     onClick={addResourceLink}
                   >
@@ -369,7 +366,7 @@ const CreateMeetingPage = () => {
 
             <div className="flex justify-end space-x-3 pt-6">
               <Link to={clubId ? `/clubs/${clubId}` : '/clubs'}>
-                <Button type="button" variant="outline">
+                <Button type="button">
                   Cancel
                 </Button>
               </Link>

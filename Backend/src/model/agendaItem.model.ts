@@ -5,6 +5,7 @@ export interface IAgendaItem extends Document {
   meetingId: Types.ObjectId;
   time: string;
   role: string;
+  clubName?:string;
   assignedTo?: Types.ObjectId;
   assignedToModel: "User" | "Guest";
   assignedToName?: string;

@@ -1,7 +1,5 @@
 export * from './auth.types';
 export * from './club.types';
-export * from './meeting.types';
-export * from './agenda.types';
 export * from './guest.types';
 export * from './event.types';
 export * from './template.types';

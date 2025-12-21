@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '../../ui/Button';
 import Card from '../../ui/Card';
 import MeetingStatus from './MeetingStatus';
-import type { IMeeting } from '../../../types';
+import type { IMeeting } from '../../../types/meeting.types';
 
 interface MeetingDetailsProps {
   meeting: IMeeting;
@@ -23,7 +23,7 @@ const MeetingDetails = ({ meeting }: MeetingDetailsProps) => {
         </div>
       </Card.Header>
       <Card.Footer>
-        <Link to={`/meetings/${meeting._id}/agenda`}><Button variant="secondary">Edit Agenda</Button></Link>
+        <Link to={`/meetings/${meeting._id}/agenda`}><Button >Edit Agenda</Button></Link>
       </Card.Footer>
     </Card>
   );

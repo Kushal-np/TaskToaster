@@ -58,13 +58,16 @@ export interface ILoginRequest {
   password: string;
 }
 
+// src/types/meeting.types.ts
+
 export enum MeetingStatus {
-  DRAFT = "draft",
-  SCHEDULED = "scheduled",
-  ONGOING = "ongoing",
-  COMPLETED = "completed",
-  CANCELLED = "cancelled",
+  DRAFT = 'draft',
+  SCHEDULED = 'scheduled',
+  IN_PROGRESS = 'in_progress',
+  COMPLETED = 'completed',
+  CANCELLED = 'cancelled',
 }
+
 
 export interface IMeeting extends Document {
   _id: Types.ObjectId;
@@ -159,7 +162,7 @@ export interface IAgendaTemplate extends Document {
   name:string ;
   description:string ;
   items:ITemplateItem[];
-  clubId? : Types.ObjectId ; 
+  clubId? : Types.ObjectId | IClub ; 
   isDefault :boolean ; 
   createdBy: Types.ObjectId ; 
   timeUsed : number ; 

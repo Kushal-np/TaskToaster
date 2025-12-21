@@ -1,12 +1,10 @@
 // src/pages/clubs/ClubDirectoryPage.tsx
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import ClubList from '../../components/features/clubs/ClubList';
 import { Button } from '../../components/ui/Button';
 import EmptyState from '../../components/ui/EmptyState';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
-import { useClubMutations } from '../../hooks/useClubMutations';
 import { useQuery } from '@tanstack/react-query';
 import { clubService } from '../../services/clubService';
 
@@ -31,21 +29,20 @@ const ClubDirectoryPage = () => {
     );
   }
 
-  if (error) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <EmptyState
-          title="Error Loading Clubs"
-          message={error.message || "There was an error loading your clubs. Please try again."}
-          action={
-            <Button onClick={() => refetch()}>
-              Retry
-            </Button>
-          }
-        />
-      </div>
-    );
-  }
+if (error) {
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col items-center space-y-4">
+      <EmptyState
+        title="Error Loading Clubs"
+        message={error.message || "There was an error loading your clubs. Please try again."}
+      />
+      <Button onClick={() => refetch()}>
+        Retry
+      </Button>
+    </div>
+  );
+}
+
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -59,7 +56,7 @@ const ClubDirectoryPage = () => {
           </div>
           <div className="flex space-x-3">
             <Link to="/onboarding/join-club">
-              <Button variant="outline">Join a Club</Button>
+              <Button >Join a Club</Button>
             </Link>
             <Link to="/onboarding/create-club">
               <Button>
@@ -70,27 +67,28 @@ const ClubDirectoryPage = () => {
           </div>
         </div>
 
-        {clubs.length === 0 ? (
-          <EmptyState
-            title="No Clubs Yet"
-            message="You haven't joined or created any clubs. Get started by creating a new club or joining an existing one."
-            action={
-              <div className="mt-6 flex flex-wrap gap-3 justify-center">
-                <Link to="/onboarding/create-club">
-                  <Button>
-                    <PlusIcon className="h-5 w-5 mr-2" />
-                    Create Your First Club
-                  </Button>
-                </Link>
-                <Link to="/onboarding/join-club">
-                  <Button variant="outline">Join Existing Club</Button>
-                </Link>
-              </div>
-            }
-          />
-        ) : (
-          <ClubList clubs={clubs} />
-        )}
+{clubs.length === 0 ? (
+  <div className="flex flex-col items-center space-y-6">
+    <EmptyState
+      title="No Clubs Yet"
+      message="You haven't joined or created any clubs. Get started by creating a new club or joining an existing one."
+    />
+    <div className="flex flex-wrap gap-3 justify-center">
+      <Link to="/onboarding/create-club">
+        <Button>
+          <PlusIcon className="h-5 w-5 mr-2" />
+          Create Your First Club
+        </Button>
+      </Link>
+      <Link to="/onboarding/join-club">
+        <Button >Join Existing Club</Button>
+      </Link>
+    </div>
+  </div>
+) : (
+  <ClubList clubs={clubs} />
+)}
+
       </div>
     </div>
   );

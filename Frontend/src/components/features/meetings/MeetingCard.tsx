@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 import { CalendarDaysIcon } from '@heroicons/react/24/outline';
 import Card from '../../ui/Card';
-import type { IMeeting, MeetingStatus } from '../../../types';
-
+import { MeetingStatus, type IMeeting } from '../../../types/meeting.types';
 interface MeetingCardProps {
   meeting: IMeeting;
 }

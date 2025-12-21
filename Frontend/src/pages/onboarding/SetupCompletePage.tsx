@@ -46,7 +46,7 @@ const SetupCompletePage = () => {
               </Button>
             </Link>
             <Link to="/meetings/create">
-              <Button variant="outline">
+              <Button >
                 Schedule First Meeting
               </Button>
             </Link>

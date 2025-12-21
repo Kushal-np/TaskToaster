@@ -11,8 +11,8 @@ import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import { useClub } from '../../hooks/useClubs';
 
 const OnboardingPage = () => {
-  const { clubs, isLoading } = useClub();
-
+  const { data:clubs, isLoading } = useClub();
+  console.log(clubs)
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -21,11 +21,7 @@ const OnboardingPage = () => {
     );
   }
 
-  // If user already has clubs, redirect to clubs directory
-  if (clubs.length > 0) {
-    window.location.href = '/clubs';
-    return null;
-  }
+
 
   return (
     <div className="max-w-4xl mx-auto py-12">
@@ -101,7 +97,7 @@ const OnboardingPage = () => {
               </div>
             </div>
             <Link to="/onboarding/join-club">
-              <Button variant="secondary" className="w-full">
+              <Button  className="w-full">
                 Join Existing Club
                 <ArrowRightIcon className="h-5 w-5 ml-2" />
               </Button>

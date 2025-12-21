@@ -1,45 +1,48 @@
-// src/pages/onboarding/CreateClubPage.tsx
-import { Link } from 'react-router-dom';
-import { ArrowLeftIcon } from '@heroicons/react/24/outline';
+// src/pages/clubs/CreateClubPage.tsx
+import { useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { clubService } from '../../services/clubService';
 import ClubForm from '../../components/features/clubs/ClubForm';
-import { useClubMutations } from '../../hooks/useClubMutations';
-import Card from '../../components/ui/Card';
+import { useToast } from '../../hooks/useToast';
 import type { ICreateClubRequest } from '../../types';
 
 const CreateClubPage = () => {
-  const { createClub } = useClubMutations();
+  const navigate = useNavigate();
+  const toast = useToast();
+  const queryClient = useQueryClient();
+
+  const createClubMutation = useMutation({
+    mutationFn: (data: ICreateClubRequest) => clubService.createClub(data),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['clubs'] });
+      toast.success('Club created successfully!');
+      navigate(`/clubs/${data._id}`);
+    },
+    onError: (error: any) => {
+      toast.error(error.message || 'Failed to create club');
+    },
+  });
 
   const handleSubmit = (data: ICreateClubRequest) => {
-    createClub.mutate(data);
+    createClubMutation.mutate(data);
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-8">
-      <div className="mb-6">
-        <Link 
-          to="/onboarding" 
-          className="inline-flex items-center text-gray-600 hover:text-gray-900"
-        >
-          <ArrowLeftIcon className="h-4 w-4 mr-2" />
-          Back to Onboarding
-        </Link>
+    <div className="space-y-6">
+      <div className="border-b border-gray-200 pb-4">
+        <h1 className="text-3xl font-bold text-gray-900">Create New Club</h1>
+        <p className="mt-2 text-sm text-gray-600">
+          Enter the details to register a new Toastmasters club
+        </p>
       </div>
 
-      <Card>
-        <Card.Header>
-          <h1 className="text-2xl font-bold text-gray-900">Create Your Club</h1>
-          <p className="text-gray-600 mt-1">
-            Set up your Toastmasters club profile to get started
-          </p>
-        </Card.Header>
-        <Card.Body>
-          <ClubForm
-            onSubmit={handleSubmit}
-            isLoading={createClub.isPending}
-            submitButtonText="Create Club"
-          />
-        </Card.Body>
-      </Card>
+      <div className="bg-white shadow rounded-lg p-6">
+        <ClubForm
+          onSubmit={handleSubmit}
+          isLoading={createClubMutation.isPending}
+          submitButtonText="Create Club"
+        />
+      </div>
     </div>
   );
 };

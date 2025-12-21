@@ -7,22 +7,17 @@ import { Link, useParams } from 'react-router-dom';
 import { useAllClubMeetings } from '../../../hooks/useMeetings';
 import EmptyState from '../../ui/EmptyState';
 import LoadingSpinner from '../../shared/LoadingSpinner';
-import type { MeetingStatus } from '../../../types';
-
+import type { MeetingStatus } from "../../../types/meeting.types"
 const MeetingCalendar = () => {
   const { clubId } = useParams<{ clubId: string }>();
   const [currentDate, setCurrentDate] = useState(new Date());
-  const { meetings = [], isLoading } = useAllClubMeetings(clubId);
+  const { data:meetings = [], isLoading } = useAllClubMeetings(clubId);
 
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(currentDate);
   const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
 
-  const getMeetingsForDay = (day: Date) => {
-    return meetings.filter(meeting => 
-      isSameDay(parseISO(meeting.meetingDate), day)
-    );
-  };
+
 
   const goToPreviousMonth = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
@@ -82,13 +77,13 @@ const MeetingCalendar = () => {
             {format(currentDate, 'MMMM yyyy')}
           </h2>
           <div className="flex items-center space-x-2">
-            <Button variant="outline" size="sm" onClick={goToToday}>
+            <Button  size="sm" onClick={goToToday}>
               Today
             </Button>
-            <Button variant="outline" size="sm" onClick={goToPreviousMonth}>
+            <Button  size="sm" onClick={goToPreviousMonth}>
               <ChevronLeftIcon className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="sm" onClick={goToNextMonth}>
+            <Button  size="sm" onClick={goToNextMonth}>
               <ChevronRightIcon className="h-4 w-4" />
             </Button>
           </div>
@@ -115,7 +110,7 @@ const MeetingCalendar = () => {
 
         {/* Calendar Days */}
         <div className="grid grid-cols-7 gap-px bg-gray-200">
-          {daysInMonth.map((day, index) => {
+          {daysInMonth.map((day) => {
             const isCurrentMonth = isSameMonth(day, currentDate);
             const isToday = isSameDay(day, new Date());
             const dayKey = format(day, 'yyyy-MM-dd');
@@ -216,7 +211,6 @@ const MeetingCalendar = () => {
           <EmptyState
             title="No Upcoming Meetings"
             message="Schedule a meeting to get started"
-            icon={<CalendarDaysIcon className="h-12 w-12 text-gray-400" />}
           />
         ) : (
           <div className="space-y-3">

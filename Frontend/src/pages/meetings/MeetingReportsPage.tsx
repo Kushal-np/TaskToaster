@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowLeftIcon, DocumentChartBarIcon } from '@heroicons/react/24/outline';
-import EmptyState from '../../components/ui/EmptyState';
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { Button } from '../../components/ui/Button';
 
 const MeetingReportsPage = () => {
@@ -20,16 +19,16 @@ const MeetingReportsPage = () => {
         </div>
       </div>
 
-      <EmptyState
-        icon={<DocumentChartBarIcon className="h-12 w-12 text-gray-400" />}
-        title="Reports Coming Soon"
-        message="Meeting reports and analytics features are currently under construction. You'll be able to view attendance, role performance, and meeting statistics here."
-        action={
-          <Link to="/meetings">
-            <Button>View Meetings</Button>
-          </Link>
-        }
-      />
+<div className="max-w-md mx-auto mt-24 text-center space-y-4">
+  <h2 className="text-2xl font-bold text-gray-900">Reports Coming Soon</h2>
+  <p className="text-gray-600">
+    Meeting reports and analytics features are currently under construction. You'll be able to view attendance, role performance, and meeting statistics here.
+  </p>
+  <Link to="/meetings">
+    <Button>View Meetings</Button>
+  </Link>
+</div>
+
     </div>
   );
 };

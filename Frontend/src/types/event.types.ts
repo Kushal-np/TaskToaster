@@ -1,6 +1,8 @@
+import type { IClub } from "./club.types";
+
 export interface IEvent {
   _id: string;
-  clubId: string;
+  clubId: string | IClub;
   eventName: string;
   description: string;
   eventDate: string;

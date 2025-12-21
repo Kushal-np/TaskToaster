@@ -10,11 +10,13 @@ import Card from '../../components/ui/Card';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import { useQuery } from '@tanstack/react-query';
 import { clubService } from '../../services/clubService';
+import type { IUser } from '../../types';
 
 const MemberManagementPage = () => {
   const { clubId } = useParams<{ clubId: string }>();
   const [isInviteModalOpen, setInviteModalOpen] = useState(false);
-  
+
+  // Fetch club and members
   const { data: club, isLoading } = useQuery({
     queryKey: ['club', clubId],
     queryFn: () => clubService.getClubById(clubId!),
@@ -31,28 +33,24 @@ const MemberManagementPage = () => {
 
   if (!club) {
     return (
-      <EmptyState
-        title="Club Not Found"
-        message="The club you're looking for doesn't exist or you don't have access."
-        action={
-          <Link to="/clubs">
-            <Button>Back to My Clubs</Button>
-          </Link>
-        }
-      />
+      <div className="flex flex-col items-center space-y-6">
+        <EmptyState
+          title="Club Not Found"
+          message="The club you're looking for doesn't exist or you don't have access."
+        />
+        <Link to="/clubs">
+          <Button>Back to My Clubs</Button>
+        </Link>
+      </div>
     );
   }
 
-  // Mock members data - you would fetch actual member details here
-  const mockMembers = club.members?.map((memberId, index) => ({
-    _id: memberId,
-    name: `Member ${index + 1}`,
-    email: `member${index + 1}@example.com`,
-    role: index === 0 ? 'President' : 'Member',
-  })) || [];
+  // Use real members from club API
+  const members: IUser[] = (club.members as any) || []; // assuming backend returns full user objects
 
   return (
     <div className="space-y-6">
+      {/* Back to Club Dashboard */}
       <div className="mb-6">
         <Link 
           to={`/clubs/${clubId}`} 
@@ -63,6 +61,7 @@ const MemberManagementPage = () => {
         </Link>
       </div>
 
+      {/* Header */}
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Member Management</h1>
@@ -70,29 +69,24 @@ const MemberManagementPage = () => {
             Manage members of {club.clubName}
           </p>
         </div>
-        <Button onClick={() => setInviteModalOpen(true)}>
-          Invite Member
-        </Button>
+        <Button onClick={() => setInviteModalOpen(true)}>Invite Member</Button>
       </div>
 
+      {/* Members Table */}
       <Card>
         <Card.Header>
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-lg font-medium text-gray-900">Members</h2>
-              <p className="text-sm text-gray-500 mt-1">
-                {mockMembers.length} total members
-              </p>
+              <p className="text-sm text-gray-500 mt-1">{members.length} total members</p>
             </div>
             <div className="flex space-x-2">
-              <Button variant="outline" size="sm">
-                Export CSV
-              </Button>
+              <Button size="sm">Export CSV</Button>
             </div>
           </div>
         </Card.Header>
         <Card.Body>
-          <MemberList members={mockMembers} />
+          <MemberList members={members} />
         </Card.Body>
       </Card>
 
@@ -100,7 +94,7 @@ const MemberManagementPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-blue-50 rounded-lg p-4">
           <p className="text-sm font-medium text-blue-800">Active Members</p>
-          <p className="text-2xl font-bold text-blue-900 mt-1">{mockMembers.length}</p>
+          <p className="text-2xl font-bold text-blue-900 mt-1">{members.length}</p>
         </div>
         <div className="bg-green-50 rounded-lg p-4">
           <p className="text-sm font-medium text-green-800">New This Month</p>

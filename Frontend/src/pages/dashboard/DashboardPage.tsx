@@ -1,5 +1,4 @@
 import StatsCard from '../../components/features/dashboard/StatsCard';
-import UpcomingMeetings from '../../components/features/dashboard/UpcomingMeetings';
 import RecentActivity from '../../components/features/dashboard/RecentActivity';
 import QuickActions from '../../components/features/dashboard/QuickActions';
 import { useDashboard } from '../../hooks/useDashboard';
@@ -25,7 +24,6 @@ const DashboardPage = () => {
         <StatsCard title="Clubs Joined" value={data.clubs.length} />
       </div>
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        <UpcomingMeetings meetings={data.upcomingMeetings} className="lg:col-span-2" />
         <div className="space-y-8">
           <QuickActions />
           <RecentActivity roles={data.roleHistory} speeches={data.speeches} />

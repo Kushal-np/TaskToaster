@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from '../../ui/Button';
 import Input from '../../ui/Input';
 import Select from '../../ui/Select';
-import type { ICreateMeetingRequest } from '../../../types';
+import type { ICreateMeetingRequest } from '../../../types/meeting.types';
 
 interface MeetingFormProps {
   onSubmit: (data: ICreateMeetingRequest) => void;
