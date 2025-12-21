@@ -2,7 +2,7 @@
  * The base URL for all API requests.
  * It's recommended to move this to an environment variable (e.g., VITE_API_BASE_URL).
  */
-export const API_BASE_URL = 'http://localhost:8000/api'; // Example URL
+export const API_BASE_URL = 'https://task-toaster-backend.vercel.app/api'; // Example URL
 
 /**
  * Authentication endpoints.
