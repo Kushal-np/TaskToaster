@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL for your backend
-export const API_BASE_URL = 'http://localhost:8000/api';
+export const API_BASE_URL = 'https://task-toaster-backend.vercel.app/api';
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
