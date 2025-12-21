@@ -31,13 +31,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Health check
-app.get("/health", (req, res) => {
-  res.status(200).json({ status: "OK", message: "Server is running" });
-});
-app.use("/" , (req , res)=>{
-  res.send("ToastMaster APP")
-})
+
+
 app.use("/api/auth", authRoutes);
 app.use("/api/v1/club", clubRoutes);
 app.use("/api/v1/meeting", meetingRoutes);
